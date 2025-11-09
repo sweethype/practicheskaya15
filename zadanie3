@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10k
+{
+    interface IPrice
+    {
+        void GetPrice();
+    }
+    interface IWarranty
+    {
+        void GetWarranty();
+    }
+    class Phone : IPrice, IWarranty
+    {
+        private int price;
+        private int warranty;
+        public int Price
+        {
+            get { return price; }
+            set
+            {
+                if (value >= 0) { price = value; }
+                else
+                {
+                    Console.WriteLine("Цена не может быть отрицательна!");
+                }
+            }
+        }
+        public int Warranty
+        {
+            get { return warranty; }
+            set
+            {
+                if (value > 0) { warranty = value; }
+                else
+                {
+                    warranty = 0;
+                }
+            }
+        }
+        public void GetPrice()
+        {
+            Console.WriteLine($"Цена телефона: {Price} руб");
+        }
+        public void GetWarranty()
+        {
+            if (Warranty > 0)
+            {
+                Console.WriteLine($"Гарантия: {Warranty} мес");
+            }
+            else
+            {
+                Console.WriteLine($"Гарантия: отсутствует");
+            }
+        }
+        public Phone(int price, int warranty)
+        {
+            Price = price;
+            Warranty = warranty;
+        }
+        public Phone(int price)
+        {
+            Price = price;
+            Warranty = 0;
+        }
+    }
+    class Laptop : IPrice
+    {
+        private int price;
+        public int Price
+        {
+            get { return price; }
+            set
+            {
+                if (value >= 0) { price = value; }
+                else
+                {
+                    Console.WriteLine("Цена не может быть отрицательна!");
+                }
+            }
+        }
+        public Laptop(int price)
+        {
+            Price = price;
+        }
+        public void GetPrice()
+        {
+            Console.WriteLine($"Цена ноутбука: {Price}");
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int Count = 0;
+            Phone[] phones = { new Phone(88000, 24) };
+            foreach (Phone p in phones)
+            {
+                p.GetPrice();
+                p.GetWarranty();
+                Count += p.Price;
+            }
+            Console.WriteLine();
+            Laptop[] laptops = { new Laptop(55000) };
+            foreach (Laptop l in laptops)
+            {
+                l.GetPrice();
+                Count += l.Price;
+            }
+            Console.WriteLine($"Общая стоимость: {Count} руб.");
+        }
+    }
+}
