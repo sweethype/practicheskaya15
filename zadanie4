@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10k
+{
+    public interface IAttackable
+    {
+        void Attack();
+    }
+    public interface IHealable
+    {
+        void Heal();
+    }
+    public class Warrior : IAttackable
+    {
+        public void Attack()
+        {
+            Console.WriteLine("Воин атакует мечом!");
+        }
+    }
+    public class Mage : IAttackable, IHealable
+    {
+        public void Attack()
+        {
+            Console.WriteLine("Маг бросает огненный шар!");
+        }
+
+        public void Heal()
+        {
+            Console.WriteLine("Маг исцеляет раны магией!");
+        }
+    }
+    public class Archer : IAttackable
+    {
+        public void Attack()
+        {
+            Console.WriteLine("Лучник стреляет из лука!");
+        }
+    }
+    public class Priest : IAttackable, IHealable
+    {
+        public void Attack()
+        {
+            Console.WriteLine("Жрец призывает божественную кару!");
+        }
+
+        public void Heal()
+        {
+            Console.WriteLine("Жрец исцеляет божественной силой!");
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            IAttackable[] attackers = new IAttackable[]
+        {
+            new Warrior(),
+            new Mage(),
+            new Archer(),
+            new Priest()
+        };
+            foreach (var attacker in attackers)
+            {
+                attacker.Attack();
+            }
+            IHealable[] healers = new IHealable[]
+            {
+            new Mage(),
+            new Priest()
+            };
+            foreach (var healer in healers)
+            {
+                healer.Heal();
+            }
+        }
+    }
+}
