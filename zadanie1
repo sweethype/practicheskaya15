@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10k
+{
+    public interface IWorkable
+    {
+        void Work();
+    }
+    public interface IChargeable
+    {
+        void Charge();
+    }
+    public class Robot : IWorkable, IChargeable
+    {
+        private string name;
+        private int energy;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public int Energy
+        {
+            get { return energy; }
+            set
+            {
+                if (value >= 0 && value <= 100)
+                {
+                    energy = value;
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: энергия должна быть от 0 до 100");
+                }
+            }
+        }
+        public Robot(string name, int energy)
+        {
+            Name = name;
+            Energy = energy;
+        }
+        public void Work()
+        {
+            if (Energy >= 20)
+            {
+                Energy -= 20;
+                Console.WriteLine($"Робот работает...\nИмя:{Name}, Энергия:{Energy}\n");
+            }
+            else
+            {
+                energy -= 0;
+                Console.WriteLine("Недостаточно энергии!");
+            }
+        }
+        public void Charge()
+        {
+            Energy += 50;
+            if (Energy >= 100)
+            {
+                energy = 100;
+            }
+            Console.WriteLine($"Робот заряжается...\nИмя:{Name}, Энергия:{Energy}\n");
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Robot[] robots = { new Robot("BNYX", 35) };
+            foreach (Robot rob in robots)
+            {
+                rob.Work();
+                rob.Work();
+                rob.Charge();
+                rob.Work();
+            }
+        }
+    }
+}
