@@ -1,0 +1,102 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10k
+{
+    public interface IToggleable
+    {
+        void On();
+        void Off();
+    }
+    public interface ILevel
+    {
+        void SetLevel(int level);
+    }
+    public class Lamp : IToggleable, ILevel
+    {
+        private int Level;
+        private bool isOn;
+        public void On()
+        {
+            isOn = true;
+            Level = 100;
+            Console.WriteLine($"Лампа включена. Уровень: {Level}");
+        }
+
+        public void Off()
+        {
+            isOn = false;
+            Level = 0;
+            Console.WriteLine($"Лампа выключена. Уровень: {Level}");
+        }
+        public void SetLevel(int level)
+        {
+            if (level < 0)
+            {
+                Level = 0;
+            }
+            else if (level > 100)
+            {
+                Level = 100;
+            }
+            else
+            {
+                Level = level;
+            }
+            isOn = (Level > 0);
+
+            Console.WriteLine($"Установлен уровень лампы: {Level}. Состояние: {(isOn ? "включена" : "выключена")}");
+        }
+        public void DisplayStatus()
+        {
+            Console.WriteLine($"Текущее состояние лампы: уровень {Level}, {(isOn ? "включена" : "выключена")}");
+        }
+    }
+    public class Fan : IToggleable
+    {
+        private bool isOn;
+
+        public void On()
+        {
+            isOn = true;
+            Console.WriteLine("Вентилятор включен");
+        }
+        public void Off()
+        {
+            isOn = false;
+            Console.WriteLine("Вентилятор выключен");
+        }
+
+        public void DisplayStatus()
+        {
+            Console.WriteLine($"Текущее состояние вентилятора: {(isOn ? "включен" : "выключен")}");
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Lamp[] lamps = { new Lamp() };
+            foreach (Lamp l in lamps)
+            {
+                l.SetLevel(30);
+                l.On();
+                l.Off();
+                l.On();
+                l.Off();
+                l.On();
+            }
+            Console.WriteLine();
+            Fan[] fans = { new Fan() };
+            foreach (Fan f in fans)
+            {
+                f.On();
+                f.Off();
+            }
+
+        }
+    }
+}
