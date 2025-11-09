@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10k
+{
+    public interface IDepositable
+    {
+        bool Deposit(decimal amount);
+        bool Withdraw(decimal amount);
+        decimal GetBalance();
+    }
+    public interface ITransferable
+    {
+        bool TransferTo(IDepositable targetAccount, decimal amount);
+    }
+    public class BankAccount : IDepositable, ITransferable
+    {
+        private decimal balance;
+        public string AccountNumber { get; }
+
+        public BankAccount(string accountNumber, decimal initialBalance = 0)
+        {
+            AccountNumber = accountNumber;
+            balance = initialBalance;
+        }
+        public bool Deposit(decimal amount)
+        {
+            if (amount > 0)
+            {
+                balance += amount;
+                return true;
+            }
+            return false;
+        }
+        public bool Withdraw(decimal amount)
+        {
+            if (amount > 0 && balance >= amount)
+            {
+                balance -= amount;
+                return true;
+            }
+            return false;
+        }
+        public bool TransferTo(IDepositable targetAccount, decimal amount)
+        {
+            if (amount > 0 && balance >= amount)
+            {
+                if (Withdraw(amount))
+                {
+                    return targetAccount.Deposit(amount);
+                }
+            }
+            return false;
+        }
+        public decimal GetBalance()
+        {
+            return balance;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            BankAccount account1 = new BankAccount("Темчик", 10000);
+            BankAccount account2 = new BankAccount("Арсений", 7500);
+            Console.WriteLine($"Счёт 1: {account1.GetBalance()}");
+            Console.WriteLine($"Счёт 2: {account2.GetBalance()}");
+            bool success = account1.TransferTo(account2, 3500);
+            Console.WriteLine($"Перевод {(success ? "выполнен успешно" : "не удался")}");
+            Console.WriteLine($"Счёт 1: {account1.GetBalance()}");
+            Console.WriteLine($"Счёт 2: {account2.GetBalance()}");
+        }
+    }
+}
